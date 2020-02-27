@@ -1,0 +1,47 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12 bg-light border-bottom">
+      <h5 class="m-0 py-3 ">G Notes</h5>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-4 p-0">
+      <ul class="list-group h-100">
+        <li class="list-group-item border-right-0" *ngFor="let i of notes; let index = index">
+          <div class="row">
+            <div class="col-10">
+              <h6>{{i.title}}</h6>
+              <p class="m-0">{{i.des}}</p>
+            </div>
+            <div class="col-2">
+              <button type="button" class="btn btn-link text-danger" (click)="deleteNote(index)">X</button>
+            </div>
+          </div>
+
+        </li>
+      </ul>
+    </div>
+    <div class="col-sm-8 border-left">
+      <form [formGroup]="notesForm" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <div class="col-12 text-right pt-3">
+            <button type="submit" class="btn btn-outline-secondary">+ Add Note</button>
+          </div>
+          <div class="col-12  mt-3 mb-0" *ngIf="changeTitle">
+            <div class="alert alert-danger">
+            Title of note not valid.
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="title">Title:</label>
+          <input type="text" class="form-control" id="title" formControlName="title">
+        </div>
+        <div class="form-group">
+          <label for="body">Body:</label>
+          <textarea class="form-control" id="body" rows="10" formControlName="des"></textarea>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
