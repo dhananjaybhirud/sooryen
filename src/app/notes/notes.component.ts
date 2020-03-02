@@ -14,8 +14,9 @@ export class NotesComponent implements OnInit {
       des: 'Description'
     }
   ];
-  changeTitle = false;
-
+  changeTitleErr = false;
+  isUpdate = false;
+  tempNoteIndex = null;
   constructor(private formBuilder: FormBuilder) {
     this.createNoteForm();
   }
@@ -29,22 +30,56 @@ export class NotesComponent implements OnInit {
       des: ['']
     });
   }
-
   deleteNote(ind) {
     this.notes.splice(ind, 1);
   }
+  ifSameTitle() {
+    let temp;
+    for (let i = 0; i < this.notes.length; i++ ){
+      if ( (this.notes[i].title === this.notesForm.value.title) && i !==  this.tempNoteIndex ) {
+        temp = true;
+        break;
+      } else {
+        temp = false;
+      }
+    }
+    return temp;
+  }
   onSubmit() {
-    console.log('Your form data : ', this.notesForm.value );
-    if (this.notesForm.value.title === '') {
-      this.changeTitle = true;
+    if (this.notesForm.value.title === '' || this.ifSameTitle()) {
+      this.changeTitleErr = true;
     } else {
       const temp = {
         title: this.notesForm.value.title,
         des: this.notesForm.value.des
       };
       this.notes.push(temp);
-      this.changeTitle = false;
+      this.changeTitleErr = false;
       this.notesForm.reset();
+    }
+  }
+  addNote() {
+    this.notesForm.reset();
+    this.isUpdate = false;
+    this.tempNoteIndex = null;
+  }
+  editNote(ind) {
+    this.notesForm.setValue(this.notes[ind]);
+    this.isUpdate = true;
+    this.tempNoteIndex = ind;
+  }
+  onUpdate() {
+    if (this.notesForm.value.title === '' || this.ifSameTitle()) {
+      this.changeTitleErr = true;
+    } else {
+      const temp = {
+        title: this.notesForm.value.title,
+        des: this.notesForm.value.des
+      };
+      this.notes[this.tempNoteIndex] = temp;
+      this.changeTitleErr = false;
+      this.notesForm.reset();
+      this.isUpdate = false;
     }
   }
 

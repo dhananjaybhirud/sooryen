@@ -7,7 +7,7 @@
   <div class="row">
     <div class="col-sm-4 p-0">
       <ul class="list-group h-100">
-        <li class="list-group-item border-right-0" *ngFor="let i of notes; let index = index">
+        <li class="list-group-item border-right-0" *ngFor="let i of notes; let index = index" (click)="editNote(index)">
           <div class="row">
             <div class="col-10">
               <h6>{{i.title}}</h6>
@@ -17,19 +17,18 @@
               <button type="button" class="btn btn-link text-danger" (click)="deleteNote(index)">X</button>
             </div>
           </div>
-
         </li>
       </ul>
     </div>
     <div class="col-sm-8 border-left">
-      <form [formGroup]="notesForm" (ngSubmit)="onSubmit()">
+      <form [formGroup]="notesForm">
         <div class="row">
           <div class="col-12 text-right pt-3">
-            <button type="submit" class="btn btn-outline-secondary">+ Add Note</button>
+            <button type="button" class="btn btn-outline-secondary" (click)="addNote()">+ Add Note</button>
           </div>
-          <div class="col-12  mt-3 mb-0" *ngIf="changeTitle">
+          <div class="col-12  mt-3 mb-0" *ngIf="changeTitleErr">
             <div class="alert alert-danger">
-            Title of note not valid.
+             Title of note not valid or already exists.
             </div>
           </div>
         </div>
@@ -40,6 +39,12 @@
         <div class="form-group">
           <label for="body">Body:</label>
           <textarea class="form-control" id="body" rows="10" formControlName="des"></textarea>
+        </div>
+        <div class="row">
+          <div class="col-12 text-right">
+            <button type="button" class="btn btn-info" (click)="onSubmit()" *ngIf="!isUpdate">Save</button>
+            <button type="button" class="btn btn-info" (click)="onUpdate()" *ngIf="isUpdate">Update</button>
+          </div>
         </div>
       </form>
     </div>
